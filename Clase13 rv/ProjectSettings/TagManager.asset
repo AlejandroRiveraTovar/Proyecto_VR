@@ -6,11 +6,15 @@ TagManager:
   tags:
   - Left
   - Right
+  - Meteor
+  - Nut
+  - Wrench
+  - Car
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Tools
   - Water
   - UI
   - 
