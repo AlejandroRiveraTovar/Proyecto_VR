@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-
-
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 /// <summary>
 /// Controlador principal para la experiencia de cambio de aceite en VR
@@ -9,34 +8,34 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// </summary>
 public class OilChangeInteraction : MonoBehaviour
 {
-    [Header("Referencias del Veh�culo")]
-    [SerializeField] private Transform oilCapLocation; // Ubicaci�n de la tapa de aceite
+    [Header("Referencias del Vehículo")]
+    [SerializeField] private Transform oilCapLocation; // Ubicación de la tapa de aceite
     [SerializeField] private Transform oilDipstickLocation; // Varilla medidora
     [SerializeField] private GameObject oilCapObject; // Modelo 3D de la tapa
     [SerializeField] private GameObject dipstickObject; // Modelo 3D de la varilla
 
-    [Header("Zona de Interacci�n")]
-    [SerializeField] private GameObject highlightZone; // �rea que se ilumina
-    [SerializeField] private Material highlightMaterial; // Material con emisi�n
+    [Header("Zona de Interacción")]
+    [SerializeField] private GameObject highlightZone; // Área que se ilumina
+    [SerializeField] private Material highlightMaterial; // Material con emisión
     [SerializeField] private float highlightIntensity = 2f;
     [SerializeField] private Color correctZoneColor = Color.green;
     [SerializeField] private Color incorrectZoneColor = Color.red;
 
     [Header("Objetos Interactuables")]
-    [SerializeField] private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable oilBottle; // Botella de aceite agarrable
-    [SerializeField] private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable wrench; // Llave para aflojar
+    [SerializeField] private XRGrabInteractable oilBottle; // Botella de aceite agarrable
+    [SerializeField] private XRGrabInteractable wrench; // Llave para aflojar
 
-    [Header("Configuraci�n de Distancia")]
-    [SerializeField] private float detectionRadius = 0.3f; // Radio de detecci�n
+    [Header("Configuración de Distancia")]
+    [SerializeField] private float detectionRadius = 0.3f; // Radio de detección
     [SerializeField] private float pourDistance = 0.15f; // Distancia para verter
 
-    [Header("Audio y Retroalimentaci�n")]
+    [Header("Audio y Retroalimentación")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip correctSound;
     [SerializeField] private AudioClip incorrectSound;
     [SerializeField] private AudioClip completionSound;
 
-    [Header("UI de Retroalimentaci�n")]
+    [Header("UI de Retroalimentación")]
     [SerializeField] private Canvas feedbackCanvas;
     [SerializeField] private TMPro.TextMeshProUGUI feedbackText;
     [SerializeField] private float feedbackDuration = 3f;
@@ -64,6 +63,12 @@ public class OilChangeInteraction : MonoBehaviour
         InitializeComponents();
         SetupInteractables();
         UpdateInstructions();
+
+        // Iniciar experiencia con AdvancedGameManager
+        if (AdvancedGameManager.Instance != null)
+        {
+            AdvancedGameManager.Instance.StartExperience("OilChange");
+        }
     }
 
     private void InitializeComponents()
@@ -107,7 +112,7 @@ public class OilChangeInteraction : MonoBehaviour
     {
         CheckProximityAndHighlight();
 
-        // Verificar si el usuario est� vertiendo aceite
+        // Verificar si el usuario está vertiendo aceite
         if (currentState == OilChangeState.PourOil && oilBottle != null && oilBottle.isSelected)
         {
             CheckOilPouringPosition();
@@ -119,7 +124,7 @@ public class OilChangeInteraction : MonoBehaviour
         Transform targetLocation = GetCurrentTargetLocation();
         if (targetLocation == null) return;
 
-        // Obtener la posici�n del controlador VR m�s cercano
+        // Obtener la posición del controlador VR más cercano
         Transform nearestController = GetNearestController();
         if (nearestController == null) return;
 
@@ -190,7 +195,7 @@ public class OilChangeInteraction : MonoBehaviour
         highlightZone.SetActive(true);
         isHighlighting = true;
 
-        // Crear material con emisi�n
+        // Crear material con emisión
         Material glowMat = new Material(highlightMaterial != null ? highlightMaterial : originalMaterial);
         glowMat.EnableKeyword("_EMISSION");
 
@@ -212,7 +217,7 @@ public class OilChangeInteraction : MonoBehaviour
     {
         if (currentState == OilChangeState.PourOil)
         {
-            ShowFeedback("Ac�rcate a la entrada de aceite del motor", Color.yellow);
+            ShowFeedback("Acércate a la entrada de aceite del motor", Color.yellow);
         }
         else
         {
@@ -223,12 +228,12 @@ public class OilChangeInteraction : MonoBehaviour
 
     private void OnOilBottleReleased(SelectExitEventArgs args)
     {
-        // L�gica cuando se suelta la botella
+        // Lógica cuando se suelta la botella
     }
 
     private void OnWrenchGrabbed(SelectEnterEventArgs args)
     {
-        // L�gica para usar la llave
+        // Lógica para usar la llave
     }
 
     private void CheckOilPouringPosition()
@@ -239,7 +244,7 @@ public class OilChangeInteraction : MonoBehaviour
 
         if (distance <= pourDistance)
         {
-            // Verificar inclinaci�n de la botella
+            // Verificar inclinación de la botella
             float tiltAngle = Vector3.Angle(oilBottle.transform.up, Vector3.down);
 
             if (tiltAngle > 45f) // Botella inclinada para verter
@@ -249,7 +254,7 @@ public class OilChangeInteraction : MonoBehaviour
         }
         else if (distance > detectionRadius)
         {
-            ShowFeedback("Te alejaste demasiado. Ac�rcate a la entrada de aceite", Color.red);
+            ShowFeedback("Te alejaste demasiado. Acércate a la entrada de aceite", Color.red);
             PlaySound(incorrectSound);
         }
     }
@@ -261,13 +266,13 @@ public class OilChangeInteraction : MonoBehaviour
         if (oilLevel >= targetOilLevel && oilLevel < 1f)
         {
             // Nivel correcto
-            ShowFeedback($"Nivel de aceite: {(oilLevel * 100):F0}% - �Perfecto!", Color.green);
+            ShowFeedback($"Nivel de aceite: {(oilLevel * 100):F0}% - ¡Perfecto!", Color.green);
         }
         else if (oilLevel >= 1f)
         {
             // Exceso de aceite
             oilLevel = 1f;
-            ShowFeedback("�CUIDADO! Exceso de aceite. Has llenado demasiado", Color.red);
+            ShowFeedback("¡CUIDADO! Exceso de aceite. Has llenado demasiado", Color.red);
             PlaySound(incorrectSound);
             AdvanceToNextState();
         }
@@ -284,7 +289,7 @@ public class OilChangeInteraction : MonoBehaviour
 
     private void CompleteOilPouring()
     {
-        ShowFeedback("�Excelente! Nivel de aceite correcto", Color.green);
+        ShowFeedback("¡Excelente! Nivel de aceite correcto", Color.green);
         PlaySound(correctSound);
         AdvanceToNextState();
     }
@@ -293,7 +298,7 @@ public class OilChangeInteraction : MonoBehaviour
     {
         if (currentState == OilChangeState.RemoveDipstick)
         {
-            ShowFeedback("�Correcto! Varilla removida. Ahora remueve la tapa de aceite", Color.green);
+            ShowFeedback("¡Correcto! Varilla removida. Ahora remueve la tapa de aceite", Color.green);
             PlaySound(correctSound);
             AdvanceToNextState();
         }
@@ -309,7 +314,7 @@ public class OilChangeInteraction : MonoBehaviour
         if (currentState == OilChangeState.RemoveOilCap)
         {
             if (oilCapObject != null) oilCapObject.SetActive(false);
-            ShowFeedback("�Perfecto! Tapa removida. Ahora toma la botella de aceite", Color.green);
+            ShowFeedback("¡Perfecto! Tapa removida. Ahora toma la botella de aceite", Color.green);
             PlaySound(correctSound);
             AdvanceToNextState();
         }
@@ -325,7 +330,7 @@ public class OilChangeInteraction : MonoBehaviour
         if (currentState == OilChangeState.ReplaceOilCap)
         {
             if (oilCapObject != null) oilCapObject.SetActive(true);
-            ShowFeedback("�Bien hecho! Tapa colocada. Verifica el nivel con la varilla", Color.green);
+            ShowFeedback("¡Bien hecho! Tapa colocada. Verifica el nivel con la varilla", Color.green);
             PlaySound(correctSound);
             AdvanceToNextState();
         }
@@ -374,7 +379,7 @@ public class OilChangeInteraction : MonoBehaviour
     private void CompleteExperience()
     {
         float score = CalculateScore();
-        string message = $"�Cambio de aceite completado!\n\nPuntuaci�n: {score:F0}/100";
+        string message = $"¡Cambio de aceite completado!\n\nPuntuación: {score:F0}/100";
 
         if (oilLevel > 1f)
         {
@@ -384,7 +389,7 @@ public class OilChangeInteraction : MonoBehaviour
         ShowFeedback(message, Color.green, 10f);
         PlaySound(completionSound);
 
-        // Activar gamificaci�n
+        // Activar gamificación - Compatible con tu GameManager existente
         GameManager gm = FindObjectOfType<GameManager>();
         if (gm != null)
         {
@@ -397,13 +402,13 @@ public class OilChangeInteraction : MonoBehaviour
     {
         float baseScore = 100f;
 
-        // Penalizaci�n por exceso de aceite
+        // Penalización por exceso de aceite
         if (oilLevel > 1f)
         {
             baseScore -= 10f;
         }
 
-        // Bonificaci�n por nivel �ptimo
+        // Bonificación por nivel óptimo
         if (Mathf.Abs(oilLevel - targetOilLevel) < 0.05f)
         {
             baseScore += 10f;
@@ -444,7 +449,7 @@ public class OilChangeInteraction : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Visualizar zonas de detecci�n en el editor
+        // Visualizar zonas de detección en el editor
         if (oilCapLocation != null)
         {
             Gizmos.color = Color.green;
