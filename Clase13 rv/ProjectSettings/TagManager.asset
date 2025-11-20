@@ -10,6 +10,7 @@ TagManager:
   - Nut
   - Wrench
   - Car
+  - Bolts
   layers:
   - Default
   - TransparentFX
