@@ -374,7 +374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &29170737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14857,7 +14857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1367543440
 Transform:
   m_ObjectHideFlags: 0
@@ -14873,10 +14873,10 @@ Transform:
   m_Children:
   - {fileID: 1794605553}
   - {fileID: 707369264}
-  - {fileID: 703752651}
-  - {fileID: 1225290875}
   - {fileID: 3685526335069375243}
   - {fileID: 2247141282749184305}
+  - {fileID: 703752651}
+  - {fileID: 1225290875}
   - {fileID: 1938501784}
   - {fileID: 1384449232}
   - {fileID: 724318647}
@@ -17468,7 +17468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1784002502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24550,7 +24550,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &2069220255110958904
 GameObject:
   m_ObjectHideFlags: 0
@@ -24959,7 +24959,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  GM: {fileID: 0}
   caliperAndPads: {fileID: 5790604124296572577}
 --- !u!54 &2313709890302392262
 Rigidbody:
@@ -26376,7 +26375,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  GM: {fileID: 0}
   caliperAndPads: {fileID: 0}
 --- !u!1 &3261169511955824340
 GameObject:
@@ -30766,7 +30764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5472977302948308201
 Transform:
   m_ObjectHideFlags: 0
@@ -31572,7 +31570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5957014584802803615
 Transform:
   m_ObjectHideFlags: 0
@@ -38555,16 +38553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9513a79c9fee1146a78856bf07582b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nutButton1: {fileID: 0}
-  nutButton2: {fileID: 0}
-  nutButton3: {fileID: 0}
-  nutButton4: {fileID: 0}
-  nutButton5: {fileID: 0}
-  tire: {fileID: 0}
-  otherCollider: {fileID: 0}
-  GM: {fileID: 0}
-  nutsRemovedCount: 0
-  wrenchOnNut: 0
+  tire: {fileID: 6779445910013162452}
   controller: {fileID: 0}
 --- !u!4 &9187746999549773784
 Transform:
@@ -38599,8 +38588,8 @@ SceneRoots:
   - {fileID: 916059903}
   - {fileID: 155709474}
   - {fileID: 1367543440}
-  - {fileID: 781819096}
   - {fileID: 7169673987250041071}
+  - {fileID: 781819096}
   - {fileID: 6170552862421796110}
   - {fileID: 1303199344}
   - {fileID: 1784002506}
