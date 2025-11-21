@@ -118,13 +118,16 @@ public class InGameUIManager : MonoBehaviour
         // Configurar para VR
         mainCanvas.renderMode = RenderMode.WorldSpace;
 
+        // IMPORTANTE: Asignar cámara de evento
         if (playerCamera != null)
         {
+            mainCanvas.worldCamera = playerCamera.GetComponent<Camera>();
+
             // Posicionar canvas frente al jugador
-            Vector3 canvasPosition = playerCamera.position + playerCamera.forward * canvasDistance;
+            Vector3 canvasPosition = playerCamera.position + playerCamera.forward * canvasDistance + Vector3.up * 0.5f;
             mainCanvas.transform.position = canvasPosition;
             mainCanvas.transform.LookAt(playerCamera);
-            mainCanvas.transform.Rotate(0, 180, 0); // Girar para que mire al jugador
+            mainCanvas.transform.Rotate(0, 180, 0);
         }
 
         // Escalar apropiadamente

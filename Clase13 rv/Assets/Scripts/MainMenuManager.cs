@@ -21,8 +21,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private AudioClip buttonHoverSound;
 
     [Header("Configuración de Escenas")]
-    [SerializeField] private string oilChangeSceneName = "OilChangeScene";
-    [SerializeField] private string brakeChangeSceneName = "BrakeChangeScene";
+    [SerializeField] private string TallerAutos = "TallerAutos";
+    
 
     [Header("Animaciones")]
     [SerializeField] private Animator menuAnimator;
@@ -98,20 +98,16 @@ public class MainMenuManager : MonoBehaviour
     /// <summary>
     /// Cargar experiencia de Cambio de Aceite
     /// </summary>
-    public void OnLoadOilChange()
+    public void TallerAutosVR()
     {
         PlayButtonSound();
-        LoadScene(oilChangeSceneName);
+        LoadScene(TallerAutos);
     }
 
     /// <summary>
     /// Cargar experiencia de Cambio de Frenos
     /// </summary>
-    public void OnLoadBrakeChange()
-    {
-        PlayButtonSound();
-        LoadScene(brakeChangeSceneName);
-    }
+   
 
     private void LoadScene(string sceneName)
     {
