@@ -580,7 +580,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 806
+    y: 751
     width: 1497
     height: 180
   m_SerializedDataModeController:
@@ -625,7 +625,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 31}
     m_SelectedIDs: 28f10000
     m_LastClickedID: 61736
-    m_ExpandedIDs: 0000000028f100002af100002cf100002ef1000030f1000032f1000034f1000036f1000038f100003af100003cf100003ef1000040f1000042f1000044f1000046f1000048f100004af100004cf100004ef1000050f1000052f1000054f10000
+    m_ExpandedIDs: 00000000fcf20000fef2000000f3000002f3000004f3000006f3000008f300000af300000cf300000ef3000010f3000012f3000014f3000016f3000018f300001af300001cf300001ef3000020f3000022f3000024f3000026f3000028f30000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -654,7 +654,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000028f100002af100002cf100002ef1000030f1000032f1000034f1000036f1000038f100003af100003cf100003ef1000040f1000042f1000044f1000046f1000048f100004af100004cf100004ef1000050f1000052f1000054f10000
+    m_ExpandedIDs: 00000000fcf20000fef2000000f3000002f3000004f3000006f3000008f300000af300000cf300000ef3000010f3000012f3000014f3000016f3000018f300001af300001cf300001ef3000020f3000022f3000024f3000026f3000028f30000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -733,8 +733,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1498
-    y: 79
+    x: 1499
+    y: 24
     width: 421
     height: 907
   m_SerializedDataModeController:
@@ -783,7 +783,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 79
+    y: 24
     width: 363
     height: 701
   m_SerializedDataModeController:
@@ -848,8 +848,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 364
-    y: 79
+    x: 365
+    y: 24
     width: 1132
     height: 701
   m_SerializedDataModeController:
@@ -1470,7 +1470,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.06799037, y: -0.26272961, z: 0.0018874012, w: 0.96421754}
     speed: 2
-    m_Value: {x: -0.06787324, y: -0.26084405, z: 0.0019860424, w: 0.96299}
+    m_Value: {x: 0.06799037, y: 0.26272961, z: -0.0018874012, w: -0.9642175}
   m_Size:
     m_Target: 6.040582
     speed: 2
