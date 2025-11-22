@@ -58,6 +58,10 @@ public class OilChangeInteraction : MonoBehaviour
     private float oilLevel = 0f; // 0 a 1
     private const float targetOilLevel = 0.8f;
 
+    // Integración con zona system
+    private InteractiveZoneSystem zoneSystem;
+    private bool hasRegisteredDistanceError = false;
+
     private void Start()
     {
         InitializeComponents();
@@ -218,11 +222,23 @@ public class OilChangeInteraction : MonoBehaviour
         if (currentState == OilChangeState.PourOil)
         {
             ShowFeedback("Acércate a la entrada de aceite del motor", Color.yellow);
+
+            // Puntos por agarrar la botella en el momento correcto
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.AddPoints(5, "Botella de aceite tomada");
+            }
         }
         else
         {
             ShowFeedback("Primero debes remover la tapa de aceite", Color.red);
             PlaySound(incorrectSound);
+
+            // Registrar error
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.RegisterError("Botella tomada antes de tiempo");
+            }
         }
     }
 
@@ -256,8 +272,17 @@ public class OilChangeInteraction : MonoBehaviour
         {
             ShowFeedback("Te alejaste demasiado. Acércate a la entrada de aceite", Color.red);
             PlaySound(incorrectSound);
+
+            // Registrar error solo una vez
+            if (AdvancedGameManager.Instance != null && !hasRegisteredDistanceError)
+            {
+                AdvancedGameManager.Instance.RegisterError("Se alejó de la zona de llenado");
+                hasRegisteredDistanceError = true;
+            }
         }
     }
+
+    //private bool hasRegisteredDistanceError = false; // Bandera para evitar errores repetidos
 
     private void PourOil()
     {
@@ -274,6 +299,13 @@ public class OilChangeInteraction : MonoBehaviour
             oilLevel = 1f;
             ShowFeedback("¡CUIDADO! Exceso de aceite. Has llenado demasiado", Color.red);
             PlaySound(incorrectSound);
+
+            // Registrar error grave
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.RegisterError("Exceso de aceite - Sobrellenado");
+            }
+
             AdvanceToNextState();
         }
         else
@@ -291,6 +323,13 @@ public class OilChangeInteraction : MonoBehaviour
     {
         ShowFeedback("¡Excelente! Nivel de aceite correcto", Color.green);
         PlaySound(correctSound);
+
+        // Puntos importantes por verter correctamente
+        if (AdvancedGameManager.Instance != null)
+        {
+            AdvancedGameManager.Instance.AddPoints(25, "Aceite vertido correctamente");
+        }
+
         AdvanceToNextState();
     }
 
@@ -300,12 +339,25 @@ public class OilChangeInteraction : MonoBehaviour
         {
             ShowFeedback("¡Correcto! Varilla removida. Ahora remueve la tapa de aceite", Color.green);
             PlaySound(correctSound);
+
+            // Registrar puntos en AdvancedGameManager
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.AddPoints(10, "Varilla removida correctamente");
+            }
+
             AdvanceToNextState();
         }
         else
         {
             ShowFeedback("Ese no es el paso correcto en este momento", Color.red);
             PlaySound(incorrectSound);
+
+            // Registrar error
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.RegisterError("Varilla removida en momento incorrecto");
+            }
         }
     }
 
@@ -316,12 +368,25 @@ public class OilChangeInteraction : MonoBehaviour
             if (oilCapObject != null) oilCapObject.SetActive(false);
             ShowFeedback("¡Perfecto! Tapa removida. Ahora toma la botella de aceite", Color.green);
             PlaySound(correctSound);
+
+            // Registrar puntos
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.AddPoints(15, "Tapa de aceite removida correctamente");
+            }
+
             AdvanceToNextState();
         }
         else
         {
             ShowFeedback("Primero debes remover la varilla medidora", Color.red);
             PlaySound(incorrectSound);
+
+            // Registrar error
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.RegisterError("Intento de remover tapa sin haber quitado la varilla");
+            }
         }
     }
 
@@ -332,6 +397,13 @@ public class OilChangeInteraction : MonoBehaviour
             if (oilCapObject != null) oilCapObject.SetActive(true);
             ShowFeedback("¡Bien hecho! Tapa colocada. Verifica el nivel con la varilla", Color.green);
             PlaySound(correctSound);
+
+            // Registrar puntos
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.AddPoints(10, "Tapa de aceite reemplazada");
+            }
+
             AdvanceToNextState();
         }
     }
@@ -339,6 +411,7 @@ public class OilChangeInteraction : MonoBehaviour
     private void AdvanceToNextState()
     {
         currentState++;
+        hasRegisteredDistanceError = false; // Resetear bandera para el siguiente estado
 
         if (currentState == OilChangeState.Complete)
         {
@@ -389,12 +462,10 @@ public class OilChangeInteraction : MonoBehaviour
         ShowFeedback(message, Color.green, 10f);
         PlaySound(completionSound);
 
-        // Activar gamificación - Compatible con tu GameManager existente
-        GameManager gm = FindObjectOfType<GameManager>();
-        if (gm != null)
+        // Registrar completado en AdvancedGameManager
+        if (AdvancedGameManager.Instance != null)
         {
-            gm.score += score;
-            gm.UpdateScore();
+            AdvancedGameManager.Instance.RegisterCompletion("OilChange", score);
         }
     }
 
