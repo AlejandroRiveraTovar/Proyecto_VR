@@ -328,6 +328,7 @@ GameObject:
   - component: {fileID: 81162866}
   - component: {fileID: 81162865}
   - component: {fileID: 81162864}
+  - component: {fileID: 81162868}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -420,6 +421,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &81162868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81162863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c190018ab1c512c44a173877716fbfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoDetectVR: 1
+  forceVRMode: 0
+  menuCanvas: {fileID: 81162866}
+  eventSystem: {fileID: 1798806332}
+  desktopCanvasDistance: 0
+  vrCanvasDistance: 3
+  vrCanvasScale: 0.002
+  vrCanvasOffset: {x: 0, y: 0, z: 0}
+  enableVRPointer: 1
+  laserPointer: {fileID: 0}
+  laserLength: 10
+  laserColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!1 &104181586
 GameObject:
   m_ObjectHideFlags: 0
