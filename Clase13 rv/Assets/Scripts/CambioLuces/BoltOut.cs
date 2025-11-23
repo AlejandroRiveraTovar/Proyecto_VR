@@ -49,6 +49,8 @@ public class BoltOut : MonoBehaviour
     private void Start()
     {
         setBolt = true;
+        boltGrabbable.GetComponent<Rigidbody>().isKinematic = true;
+        toolGrabbable.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     /// <summary>
@@ -73,6 +75,7 @@ public class BoltOut : MonoBehaviour
         }
     }
 
+    
     /// <summary>
     /// Revisa cada frame si el perno ha sido reinsertado.
     /// Se comprueba la posición del socket y el estado de la herramienta.
@@ -87,6 +90,8 @@ public class BoltOut : MonoBehaviour
             // Apaga la palanca de torque y habilita la herramienta normal
             toolLever.SetActive(false);
             toolGrabbable.SetActive(true);
+
+            
 
             // Resetea el sentido de giro
             toolLever.GetComponent<BoltTorqueMover>().InvertirDireccion = false;
