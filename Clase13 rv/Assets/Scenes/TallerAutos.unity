@@ -12485,7 +12485,7 @@ MonoBehaviour:
   m_NearInteractionCaster: {fileID: 498354092}
   m_NearCasterSortingStrategy: 1
   m_SortNearTargetsAfterTargetFilter: 0
-  m_EnableFarCasting: 1
+  m_EnableFarCasting: 0
   m_FarInteractionCaster: {fileID: 0}
   m_FarAttachMode: 1
   m_EnableUIInteraction: 1
@@ -12638,7 +12638,7 @@ MonoBehaviour:
   lightSpace: {fileID: 499163536}
   lMat: {fileID: 2100000, guid: d2c3b9320404f7142b2c312c6dc7c643, type: 2}
   dlMat: {fileID: 2100000, guid: 9e8d496d63ad50744a0057e76919b9c4, type: 2}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 86469505}
 --- !u!114 &499163536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26060,17 +26060,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: left
   m_InteractionManager: {fileID: 811666115}
-  m_StartingGroupMembers:
-  - {fileID: 0}
-  - {fileID: 498354094}
-  - {fileID: 542814918}
-  m_StartingInteractionOverridesMap:
-  - groupMember: {fileID: 498354094}
-    overrideGroupMembers:
-    - {fileID: 0}
-  - groupMember: {fileID: 542814918}
-    overrideGroupMembers:
-    - {fileID: 0}
+  m_StartingGroupMembers: []
+  m_StartingInteractionOverridesMap: []
 --- !u!1 &815902857
 GameObject:
   m_ObjectHideFlags: 0
@@ -26701,7 +26692,7 @@ Transform:
   m_GameObject: {fileID: 870075226}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.614, y: -2.423, z: -2.49}
+  m_LocalPosition: {x: -4.84, y: -2.423, z: -6.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -34253,7 +34244,7 @@ MonoBehaviour:
   lightSpace: {fileID: 1137371086}
   lMat: {fileID: 2100000, guid: d2c3b9320404f7142b2c312c6dc7c643, type: 2}
   dlMat: {fileID: 2100000, guid: 9e8d496d63ad50744a0057e76919b9c4, type: 2}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 1345363718}
 --- !u!1 &1137849097
 GameObject:
   m_ObjectHideFlags: 0
