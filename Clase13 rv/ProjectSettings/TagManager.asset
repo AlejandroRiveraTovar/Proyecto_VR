@@ -12,6 +12,7 @@ TagManager:
   - Car
   - Bolts
   - GoodLight
+  - Botella
   layers:
   - Default
   - TransparentFX

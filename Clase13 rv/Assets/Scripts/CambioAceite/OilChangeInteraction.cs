@@ -24,6 +24,14 @@ public class OilChangeInteraction : MonoBehaviour
     [Header("Objetos Interactuables")]
     [SerializeField] private XRGrabInteractable oilBottle; // Botella de aceite agarrable
     [SerializeField] private XRGrabInteractable wrench; // Llave para aflojar
+    [SerializeField] private Transform oilBottleSpout; // Pico/boquilla de la botella
+
+    [Header("Sistema de Vertido")]
+    [SerializeField] private ParticleSystem oilParticles; // Partículas de aceite
+    [SerializeField] private AudioSource oilPouringAudioSource; // Audio del aceite
+    [SerializeField] private AudioClip oilPouringSound; // Sonido de líquido
+    [SerializeField] private float particleEmissionRate = 50f;
+    [SerializeField] private GameObject pouringZoneHighlight; // Iluminación zona de vertido
 
     [Header("Configuración de Distancia")]
     [SerializeField] private float detectionRadius = 0.3f; // Radio de detección
@@ -72,6 +80,13 @@ public class OilChangeInteraction : MonoBehaviour
         if (AdvancedGameManager.Instance != null)
         {
             AdvancedGameManager.Instance.StartExperience("OilChange");
+        }
+
+        // Buscar zona system
+        zoneSystem = FindObjectOfType<InteractiveZoneSystem>();
+        if (zoneSystem == null)
+        {
+            Debug.LogWarning("[OilChangeInteraction] No se encontró InteractiveZoneSystem");
         }
     }
 
@@ -219,7 +234,7 @@ public class OilChangeInteraction : MonoBehaviour
 
     private void OnOilBottleGrabbed(SelectEnterEventArgs args)
     {
-        if (currentState == OilChangeState.PourOil)
+        if (true)
         {
             ShowFeedback("Acércate a la entrada de aceite del motor", Color.yellow);
 
@@ -227,6 +242,12 @@ public class OilChangeInteraction : MonoBehaviour
             if (AdvancedGameManager.Instance != null)
             {
                 AdvancedGameManager.Instance.AddPoints(5, "Botella de aceite tomada");
+            }
+
+            // Completar zona de botella
+            if (zoneSystem != null)
+            {
+                zoneSystem.CompleteZone("OilBottle");
             }
         }
         else
@@ -256,33 +277,51 @@ public class OilChangeInteraction : MonoBehaviour
     {
         if (oilCapLocation == null) return;
 
-        float distance = Vector3.Distance(oilBottle.transform.position, oilCapLocation.position);
+        Transform spoutTransform = oilBottleSpout != null ? oilBottleSpout : oilBottle.transform;
 
+        float distance = Vector3.Distance(spoutTransform.position, oilCapLocation.position);
+
+        // Activar highlight de zona
+        if (pouringZoneHighlight != null)
+            pouringZoneHighlight.SetActive(distance <= pourDistance * 1.5f);
+
+        // Si estamos en la zona → verter SIN inclinación
         if (distance <= pourDistance)
         {
-            // Verificar inclinación de la botella
-            float tiltAngle = Vector3.Angle(oilBottle.transform.up, Vector3.down);
+            if (oilParticles != null && !oilParticles.isPlaying)
+                oilParticles.Play();
 
-            if (tiltAngle > 45f) // Botella inclinada para verter
+            if (oilPouringAudioSource != null && !oilPouringAudioSource.isPlaying && oilPouringSound != null)
             {
-                PourOil();
+                oilPouringAudioSource.clip = oilPouringSound;
+                oilPouringAudioSource.loop = true;
+                oilPouringAudioSource.Play();
             }
+
+            PourOil();
         }
-        else if (distance > detectionRadius)
+        else
         {
-            ShowFeedback("Te alejaste demasiado. Acércate a la entrada de aceite", Color.red);
-            PlaySound(incorrectSound);
-
-            // Registrar error solo una vez
-            if (AdvancedGameManager.Instance != null && !hasRegisteredDistanceError)
-            {
-                AdvancedGameManager.Instance.RegisterError("Se alejó de la zona de llenado");
-                hasRegisteredDistanceError = true;
-            }
+            StopPouring();
         }
     }
 
-    //private bool hasRegisteredDistanceError = false; // Bandera para evitar errores repetidos
+    private void StopPouring()
+    {
+        // Detener partículas
+        if (oilParticles != null && oilParticles.isPlaying)
+        {
+            oilParticles.Stop();
+        }
+
+        // Detener sonido
+        if (oilPouringAudioSource != null && oilPouringAudioSource.isPlaying)
+        {
+            oilPouringAudioSource.Stop();
+        }
+    }
+
+    
 
     private void PourOil()
     {
@@ -324,6 +363,15 @@ public class OilChangeInteraction : MonoBehaviour
         ShowFeedback("¡Excelente! Nivel de aceite correcto", Color.green);
         PlaySound(correctSound);
 
+        // Detener vertido
+        StopPouring();
+
+        // Desactivar highlight de zona
+        if (pouringZoneHighlight != null)
+        {
+            pouringZoneHighlight.SetActive(false);
+        }
+
         // Puntos importantes por verter correctamente
         if (AdvancedGameManager.Instance != null)
         {
@@ -344,6 +392,12 @@ public class OilChangeInteraction : MonoBehaviour
             if (AdvancedGameManager.Instance != null)
             {
                 AdvancedGameManager.Instance.AddPoints(10, "Varilla removida correctamente");
+            }
+
+            // Completar zona interactiva
+            if (zoneSystem != null)
+            {
+                zoneSystem.CompleteZone("Dipstick");
             }
 
             AdvanceToNextState();
@@ -375,6 +429,12 @@ public class OilChangeInteraction : MonoBehaviour
                 AdvancedGameManager.Instance.AddPoints(15, "Tapa de aceite removida correctamente");
             }
 
+            // Completar zona interactiva
+            if (zoneSystem != null)
+            {
+                zoneSystem.CompleteZone("OilCap");
+            }
+
             AdvanceToNextState();
         }
         else
@@ -402,6 +462,35 @@ public class OilChangeInteraction : MonoBehaviour
             if (AdvancedGameManager.Instance != null)
             {
                 AdvancedGameManager.Instance.AddPoints(10, "Tapa de aceite reemplazada");
+            }
+
+            // Completar zona
+            if (zoneSystem != null)
+            {
+                zoneSystem.CompleteZone("ReplaceOilCap");
+            }
+
+            AdvanceToNextState();
+        }
+    }
+
+    public void OnLevelChecked()
+    {
+        if (currentState == OilChangeState.CheckLevel)
+        {
+            ShowFeedback("¡Excelente! Nivel verificado correctamente", Color.green);
+            PlaySound(correctSound);
+
+            // Registrar puntos
+            if (AdvancedGameManager.Instance != null)
+            {
+                AdvancedGameManager.Instance.AddPoints(10, "Nivel verificado");
+            }
+
+            // Completar última zona
+            if (zoneSystem != null)
+            {
+                zoneSystem.CompleteZone("CheckLevel");
             }
 
             AdvanceToNextState();
