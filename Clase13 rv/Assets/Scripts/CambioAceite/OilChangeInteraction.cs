@@ -288,16 +288,13 @@ public class OilChangeInteraction : MonoBehaviour
         // Si estamos en la zona → verter SIN inclinación
         if (distance <= pourDistance)
         {
-            if (oilParticles != null && !oilParticles.isPlaying)
-                oilParticles.Play();
-
-            if (oilPouringAudioSource != null && !oilPouringAudioSource.isPlaying && oilPouringSound != null)
+            if (!oilParticles.isPlaying) oilParticles.Play();
+            if (!oilPouringAudioSource.isPlaying)
             {
                 oilPouringAudioSource.clip = oilPouringSound;
                 oilPouringAudioSource.loop = true;
                 oilPouringAudioSource.Play();
             }
-
             PourOil();
         }
         else
@@ -306,7 +303,7 @@ public class OilChangeInteraction : MonoBehaviour
         }
     }
 
-    private void StopPouring()
+        private void StopPouring()
     {
         // Detener partículas
         if (oilParticles != null && oilParticles.isPlaying)
